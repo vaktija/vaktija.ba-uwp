@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="Vaktija.ba.Pages.QiblaCompass"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Vaktija.ba.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Icon="Target" Label="Lociraj me" Click="Locate_Me_Btn_Click"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Body_Grid" Grid.Row="1" >
+            <Pivot x:Name="_pivot" Title="Kibla kompas"><!--Change background color dynamically in code-->
+                <PivotItem x:Name="locationPivotItem" Header="Skender-Vakuf" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid >
+                        <FlipView x:Name="kompasiFlipView" Background="Transparent" SelectionChanged="kompasiFlipView_SelectionChanged">
+                            <Grid x:Name="contentPanel2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Image x:Name="kompasImg" Source="ms-appx:///Assets/Images/za_kompas_gray.png" 
+                                       Height="200" Width="200">
+                                    <Image.RenderTransform>
+                                        <CompositeTransform x:Name="compassCT1" Rotation="0" CenterX="100" CenterY="100"/>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </Grid>
+                        </FlipView>
+                    </Grid>
+                </PivotItem>
+            </Pivot>
+            <TextBlock x:Name="statusTB" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="6" Text="Ugao: 0°"/>
+        </Grid>
+
+        <!--Warning message-->
+        <Grid Name="Calibration_Grid" Grid.Row="1" Background="#FF171717" Opacity="0.9" Visibility="Collapsed">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock TextWrapping="Wrap" Foreground="White" TextAlignment="Center" FontSize="18" Margin="24">
+                                Potrebna je kalibracija kompasa vašeg uređaja!
+                </TextBlock>
+                <Image HorizontalAlignment="Center" Height="100" Source="ms-appx:///Assets/Images/calibration.png"/>
+                <TextBlock TextWrapping="Wrap" Foreground="White" TextAlignment="Center" Margin="24">
+                                Držite uređaj ispred sebe i pomjerajte ga kružnim pokretima praveći 8 (osmicu)
+                                dok se kalibracija ne završi.
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+
+        <!--Show it if device hasn't compass-->
+        <Grid Name="NoCompass_Grid" Grid.Row="1" Background="#FF171717" Opacity="0.9" Visibility="Collapsed">
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center" Foreground="White" FontSize="28" Margin="24">
+                            Na Vašem uređaju nema kompasa!
+            </TextBlock>
+            <Image Source="ms-appx:///Assets/Images/nocompass.png" Height="200"/>
+            <Border Background="Red" VerticalAlignment="Center" HorizontalAlignment="Center" Height="10" Width="200">
+                <Border.RenderTransform>
+                    <CompositeTransform CenterX="100" CenterY="5" Rotation="135"/>
+                </Border.RenderTransform>
+            </Border>
+            <Border Background="Red" VerticalAlignment="Center" HorizontalAlignment="Center" Height="10" Width="200">
+                <Border.RenderTransform>
+                    <CompositeTransform CenterX="100" CenterY="5" Rotation="-135"/>
+                </Border.RenderTransform>
+            </Border>
+        </Grid>
+
+        <ProgressRing x:Name="loader" Width="80" Height="80" Grid.Row="1" IsActive="False" Background="Transparent"/>
+    </Grid>
+</Page>

@@ -1,0 +1,2 @@
+MainPackage=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\bin\x86\Release\Upload\Vaktija.ba_1.10.3.0_x86.appx
+SymbolPackage=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\AppPackages\Vaktija.ba_1.10.3.0\Vaktija.ba_1.10.3.0_x86.appxsym

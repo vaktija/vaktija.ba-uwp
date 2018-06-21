@@ -1,0 +1,126 @@
+﻿<Page
+    x:Class="Vaktija.ba.Pages.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Vaktija.ba.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Body_Grid" Grid.Row="1" >
+            <Pivot x:Name="_pivot" Title="Postavke" Background="#FF1F1F1F">
+                <PivotItem Header="Opšte" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <ListView SelectionMode="None">
+                        <ListViewItem Tapped="location_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
+                            <StackPanel>
+                                <TextBlock x:Name="location_Title" Text="Lokacija"/>
+                                <TextBlock x:Name="locationHB" Text="Sarajevo" Foreground="Gray"/>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ToggleSwitch x:Name="dateShowInApp_TS" Foreground="Gray" Header="Datum u aplikaciji" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="dateShowInApp_TS_Toggled">
+                            <ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ToggleSwitch.HeaderTemplate>
+                        </ToggleSwitch>
+                        <ToggleSwitch x:Name="hijriDateShowInApp_TS" Foreground="Gray" Header="Hidžretski datum" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="hijriDateShowInApp_TS_Toggled">
+                            <ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ToggleSwitch.HeaderTemplate>
+                        </ToggleSwitch>
+                        <ListViewItem VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
+                            <ComboBox x:Name="stdPodneCB" Header="Vrijeme podne namaza" SelectedIndex="0" SelectionChanged="stdPodneCB_SelectionChanged">
+                                <ComboBox.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.HeaderTemplate>
+                                <ComboBoxItem Content="Standardno vrijeme (12h/13h)"/>
+                                <ComboBoxItem Content="Stvarno vrijeme"/>
+                            </ComboBox>
+                        </ListViewItem>
+                        <ListViewItem Visibility="Visible" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
+                            <ComboBox x:Name="themeCB" Header="Tema" SelectedIndex="1" SelectionChanged="themeCB_SelectionChanged">
+                                <ComboBox.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.HeaderTemplate>
+                                <ComboBoxItem Content="Tema uređaja"/>
+                                <ComboBoxItem Content="Svijetla"/>
+                                <ComboBoxItem Content="Tamna"/>
+                            </ComboBox>
+                        </ListViewItem>
+                    </ListView>
+                </PivotItem>
+                <PivotItem Header="Obavijesti" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <ListView SelectionMode="None">
+                        <ListViewItem x:Name="alarmLVI" Tapped="alarmsound_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
+                            <StackPanel>
+                                <TextBlock Text="Zvuk alarma"/>
+                                <TextBlock x:Name="alarmsoundHB" Text="Default(Beep)" Foreground="Gray"/>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Tapped="toastsound_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
+                            <StackPanel>
+                                <TextBlock Text="Zvuk notifikacije"/>
+                                <TextBlock x:Name="toastsoundHB" Text="Default(Beep)" Foreground="Gray"/>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ToggleSwitch x:Name="livetile_TS" Foreground="Gray" Header="Živa pločica" IsOn="True" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="livetile_TS_Toggled">
+                            <ToggleSwitch.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ToggleSwitch.HeaderTemplate>
+                        </ToggleSwitch>
+                    </ListView>
+                </PivotItem>
+                <PivotItem Header="O aplikaciji" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Top">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Image x:Name="logo_Img" Height="80" Margin="6" Source="ms-appx:///Assets/Images/logo_wide.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid >
+                                    <StackPanel>
+                                        <TextBlock x:Name="appnameTB" x:Uid="AppName" Margin="3" Text="Vaktija.ba" FontSize="18"/>
+                                        <TextBlock x:Name="versionTB" Text="v 1.0.0" Margin="3" FontSize="18" Foreground="Gray"/>
+                                        <StackPanel Orientation="Horizontal" Margin="3">
+                                            <TextBlock FontSize="18" Text="by Vaktija.ba team"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Bottom">
+                            <Button Background="{x:Null}" Click="contactBtn_Click" Margin="0,6">
+                                Kontakt (bug, sugestije,...)
+                            </Button>
+                            <Button Background="{x:Null}" Click="rateBtn_Click" Margin="0,6">
+                                Ocijeni aplikaciju
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+            </Pivot>
+        </Grid>
+        <Grid x:Name="Toast_Grid" Grid.Row="2" Background="Red" Visibility="Collapsed">
+            <TextBlock x:Name="Toast_TextBlock" Text="" Padding="12,6" FontSize="18" Foreground="White" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Grid>
+        <MediaElement x:Name="audio_prev" />
+        <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent"/>
+    </Grid>
+</Page>

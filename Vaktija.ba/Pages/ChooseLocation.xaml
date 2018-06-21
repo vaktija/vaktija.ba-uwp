@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="Vaktija.ba.Pages.ChooseLocation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Vaktija.ba.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Icon="Accept" Label="Sačuvaj" Click="Odaberi_Btn_Click"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Body_Grid" Grid.Row="1" >
+            <Pivot x:Name="_pivot" Title="Odaberite lokaciju" Background="#FF1F1F1F">
+                <PivotItem x:Name="bih" Header="Bosna i Hercegovina" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <ListBox x:Name="lv1" SelectionMode="Single" Background="{x:Null}">
+                        
+                    </ListBox>
+                </PivotItem>
+                <PivotItem x:Name="san" Header="Sandžak" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <ListBox x:Name="lv2" SelectionMode="Single" Background="{x:Null}">
+                        
+                    </ListBox>
+                </PivotItem>
+            </Pivot>
+        </Grid>
+        <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent"/>
+    </Grid>
+</Page>
