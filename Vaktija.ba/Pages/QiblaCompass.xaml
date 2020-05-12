@@ -2,7 +2,6 @@
     x:Class="Vaktija.ba.Pages.QiblaCompass"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Vaktija.ba.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -22,7 +21,7 @@
         </Grid.RowDefinitions>
         <Grid x:Name="Body_Grid" Grid.Row="1" >
             <Pivot x:Name="_pivot" Title="Kibla kompas"><!--Change background color dynamically in code-->
-                <PivotItem x:Name="locationPivotItem" Header="Skender-Vakuf" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <PivotItem x:Name="locationPivotItem" Header="{Binding lokacija}" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                     <Grid >
                         <FlipView x:Name="kompasiFlipView" Background="Transparent" SelectionChanged="kompasiFlipView_SelectionChanged">
                             <Grid x:Name="contentPanel2" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -72,6 +71,6 @@
             </Border>
         </Grid>
 
-        <ProgressRing x:Name="loader" Width="80" Height="80" Grid.Row="1" IsActive="False" Background="Transparent"/>
+        <ProgressRing x:Name="loader" Width="80" Height="80" Grid.Row="1" IsActive="False" Background="Transparent" Foreground="#FF9D9D00"/>
     </Grid>
 </Page>

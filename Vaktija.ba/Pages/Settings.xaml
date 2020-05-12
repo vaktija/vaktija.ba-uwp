@@ -2,7 +2,6 @@
     x:Class="Vaktija.ba.Pages.Settings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Vaktija.ba.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -14,23 +13,23 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="Body_Grid" Grid.Row="1" >
-            <Pivot x:Name="_pivot" Title="Postavke" Background="#FF1F1F1F">
+            <Pivot x:Name="_pivot" Title="Postavke" Background="{Binding background}" SelectedIndex="0">
                 <PivotItem Header="Opšte" Margin="0,0" Padding="12,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                     <ListView SelectionMode="None">
                         <ListViewItem Tapped="location_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
                             <StackPanel>
                                 <TextBlock x:Name="location_Title" Text="Lokacija"/>
-                                <TextBlock x:Name="locationHB" Text="Sarajevo" Foreground="Gray"/>
+                                <TextBlock x:Name="locationHB" Text="{Binding location}" Foreground="Gray"/>
                             </StackPanel>
                         </ListViewItem>
-                        <ToggleSwitch x:Name="dateShowInApp_TS" Foreground="Gray" Header="Datum u aplikaciji" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="dateShowInApp_TS_Toggled">
+                        <ToggleSwitch x:Name="dateShowInApp_TS" IsOn="{Binding dateInApp}" Foreground="Gray" Header="Datum u aplikaciji" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="dateShowInApp_TS_Toggled">
                             <ToggleSwitch.HeaderTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}"/>
                                 </DataTemplate>
                             </ToggleSwitch.HeaderTemplate>
                         </ToggleSwitch>
-                        <ToggleSwitch x:Name="hijriDateShowInApp_TS" Foreground="Gray" Header="Hidžretski datum" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="hijriDateShowInApp_TS_Toggled">
+                        <ToggleSwitch x:Name="hijriDateShowInApp_TS" IsOn="{Binding hijriDateInApp}" IsEnabled="{Binding dateInApp}" Foreground="Gray" Header="Hidžretski datum" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="hijriDateShowInApp_TS_Toggled">
                             <ToggleSwitch.HeaderTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}"/>
@@ -38,7 +37,7 @@
                             </ToggleSwitch.HeaderTemplate>
                         </ToggleSwitch>
                         <ListViewItem VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
-                            <ComboBox x:Name="stdPodneCB" Header="Vrijeme podne namaza" SelectedIndex="0" SelectionChanged="stdPodneCB_SelectionChanged">
+                            <ComboBox x:Name="stdPodneCB" SelectedIndex="{Binding stdPodne}" Header="Vrijeme podne namaza" SelectionChanged="stdPodneCB_SelectionChanged">
                                 <ComboBox.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}"/>
@@ -49,7 +48,7 @@
                             </ComboBox>
                         </ListViewItem>
                         <ListViewItem Visibility="Visible" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
-                            <ComboBox x:Name="themeCB" Header="Tema" SelectedIndex="1" SelectionChanged="themeCB_SelectionChanged">
+                            <ComboBox x:Name="themeCB" Header="Tema" SelectedIndex="{Binding themeSelect}" SelectionChanged="themeCB_SelectionChanged">
                                 <ComboBox.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}" />
@@ -67,16 +66,16 @@
                         <ListViewItem x:Name="alarmLVI" Tapped="alarmsound_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
                             <StackPanel>
                                 <TextBlock Text="Zvuk alarma"/>
-                                <TextBlock x:Name="alarmsoundHB" Text="Default(Beep)" Foreground="Gray"/>
+                                <TextBlock x:Name="alarmsoundHB" Text="{Binding alarmName}" Foreground="Gray"/>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem Tapped="toastsound_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12">
                             <StackPanel>
                                 <TextBlock Text="Zvuk notifikacije"/>
-                                <TextBlock x:Name="toastsoundHB" Text="Default(Beep)" Foreground="Gray"/>
+                                <TextBlock x:Name="toastsoundHB" Text="{Binding toastName}" Foreground="Gray"/>
                             </StackPanel>
                         </ListViewItem>
-                        <ToggleSwitch x:Name="livetile_TS" Foreground="Gray" Header="Živa pločica" IsOn="True" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="livetile_TS_Toggled">
+                        <ToggleSwitch x:Name="livetile_TS" Foreground="Gray" Header="Živa pločica" IsOn="{Binding livetile}" OnContent="Uključeno" OffContent="Isključeno" Margin="0,12" Toggled="livetile_TS_Toggled">
                             <ToggleSwitch.HeaderTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}"/>
@@ -96,10 +95,10 @@
                             <StackPanel Orientation="Horizontal">
                                 <Grid >
                                     <StackPanel>
-                                        <TextBlock x:Name="appnameTB" x:Uid="AppName" Margin="3" Text="Vaktija.ba" FontSize="18"/>
-                                        <TextBlock x:Name="versionTB" Text="v 1.0.0" Margin="3" FontSize="18" Foreground="Gray"/>
+                                        <TextBlock x:Name="appnameTB" x:Uid="AppName" Margin="3" Text="{Binding appName}" FontSize="18"/>
+                                        <TextBlock x:Name="versionTB" Text="{Binding appVersion}" Margin="3" FontSize="18" Foreground="Gray"/>
                                         <StackPanel Orientation="Horizontal" Margin="3">
-                                            <TextBlock FontSize="18" Text="by Vaktija.ba team"/>
+                                            <TextBlock FontSize="18" Text="{Binding appDevs}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Grid>
@@ -121,6 +120,6 @@
             <TextBlock x:Name="Toast_TextBlock" Text="" Padding="12,6" FontSize="18" Foreground="White" TextWrapping="Wrap" TextAlignment="Center"/>
         </Grid>
         <MediaElement x:Name="audio_prev" />
-        <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent"/>
+        <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent" Foreground="#7F9D9D00"/>
     </Grid>
 </Page>

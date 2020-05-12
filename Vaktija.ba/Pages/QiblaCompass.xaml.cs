@@ -1,6 +1,5 @@
 ﻿using System;
 using Vaktija.ba.Helpers;
-using Vaktija.ba.Views;
 using Windows.Devices.Geolocation;
 using Windows.Devices.Sensors;
 using Windows.Phone.UI.Input;
@@ -17,16 +16,18 @@ namespace Vaktija.ba.Pages
 {
     public sealed partial class QiblaCompass : Page
     {
-        Compass _compass = Compass.GetDefault();
         double od_kompasa = 0;
         double qibla_angle = 0;
         MagnetometerAccuracy accuracy = new MagnetometerAccuracy();
         bool ucitano = false;
         DispatcherTimer timer = new DispatcherTimer();
+        Compass _compass = Compass.GetDefault();
 
         public QiblaCompass()
         {
             this.InitializeComponent();
+
+            DataContext = new HomePageShow();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -45,20 +46,25 @@ namespace Vaktija.ba.Pages
 
             ucitano = false;
 
-            var cmp = Windows.Devices.Sensors.Compass.GetDefault();
-            if (cmp == null)
+            _compass = Windows.Devices.Sensors.Compass.GetDefault();
+
+            if (_compass == null)
             {
                 NoCompass_Grid.Visibility = Visibility.Visible;
                 return;
             }
-            _compass.ReadingChanged += _compass_ReadingChanged;
-            try
+            else
             {
-                Postavi_Stranicu(Memory.location);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Greška pri postavljanju stranice " + " (" + ex.Message + ")");
+                _compass.ReadingChanged += _compass_ReadingChanged;
+
+                try
+                {
+                    Postavi_Stranicu(Memory.location, Data.data.coordinates[Memory.location].ime, Data.data.coordinates[Memory.location].latitude, Data.data.coordinates[Memory.location].longitude);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Greška pri postavljanju stranice " + " (" + ex.Message + ")");
+                }
             }
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -73,28 +79,24 @@ namespace Vaktija.ba.Pages
             Frame.GoBack();
         }
 
-        private void Postavi_Stranicu(Location grad)
+        private void Postavi_Stranicu(int id, string ime, double lat1, double long1)
         {
+            System.Diagnostics.Debug.WriteLine("Coordinates " + " (" + lat1 + " : " + long1 + ")");
+
             if (Fixed.IsDarkTheme)
-            {
                 _pivot.Background = new SolidColorBrush(Color.FromArgb(255, 31, 31, 31));
-            }
             else
-            {
                 _pivot.Background = new SolidColorBrush(Color.FromArgb(255, 241, 241, 241));
-            }
 
             try
             {
                 kompasiFlipView.SelectedIndex = Memory.KompasBroj;
             }
             catch { }
+
             ucitano = true;
 
             #region Računanje ugla između pravca prema sjeveru i prema Kibli
-            double lat1 = grad.latitude; //Curren city's geocoordinates
-            double long1 = grad.longitude;
-
             double lat2 = 21.4225; //Qibla's geocoordinates
             double long2 = 39.8261;
 
@@ -103,12 +105,11 @@ namespace Vaktija.ba.Pages
 
             double pox = long1 - long2;
             double poy = lat1 - lat2;
-            double poc = Math.Sqrt(pox * pox + poy * poy);
-            double beta = Math.Acos(pox / poc) * 180 / Math.PI; //Ugao između pravaca prema sjeveru i prema Kibli za koordinate (lat1, long1)
-            qibla_angle = beta;
+            double poc = Math.Sqrt((long1 - long2)*(long1 - long2) + (lat1 - lat2)*(lat1 - lat2));
+            qibla_angle = Math.Acos(pox / poc) * 180 / Math.PI; //Ugao između pravaca prema sjeveru i prema Kibli za koordinate (lat1, long1)
             #endregion
 
-            locationPivotItem.Header = grad.ime;
+            locationPivotItem.Header = ime;
 
             timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             timer.Tick += Timer_Tick;
@@ -116,20 +117,14 @@ namespace Vaktija.ba.Pages
         }
         private void _compass_ReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
         {
-            try
-            {
-                od_kompasa = args.Reading.HeadingTrueNorth.Value - qibla_angle;
-                accuracy = args.Reading.HeadingAccuracy;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Greška pri očitavanju kompasa uređaja " + "(" + ex.Message + ")");
-            }
+            od_kompasa = args.Reading.HeadingTrueNorth.Value - qibla_angle;
+            accuracy = args.Reading.HeadingAccuracy;
         }
         private void Timer_Tick(object sender, object e)
         {
             compassCT1.Rotation = -od_kompasa;
             statusTB.Text = "Ugao: " + (int)compassCT1.Rotation + "°";
+
             if ((int)compassCT1.Rotation == 0)
             {
                 kompasImg.Source = new BitmapImage(new Uri("ms-appx:///Assets/Images/za_kompas.png"));
@@ -156,12 +151,13 @@ namespace Vaktija.ba.Pages
         private async void Locate_Me_Btn_Click(object sender, RoutedEventArgs e)
         {
             var cmp = Compass.GetDefault();
+
             if (cmp == null) return;
             try
             {
                 Geolocator geolocator = new Geolocator();
                 Geoposition geoposition = await geolocator.GetGeopositionAsync();
-                Postavi_Stranicu(new Location { id = 0, ime = "Moja lokacija", latitude = geoposition.Coordinate.Point.Position.Latitude, longitude = geoposition.Coordinate.Point.Position.Longitude });
+                Postavi_Stranicu(-1, "Moja lokacija", geoposition.Coordinate.Point.Position.Latitude, geoposition.Coordinate.Point.Position.Longitude);
             }
             catch (Exception ex)
             {
@@ -194,4 +190,31 @@ namespace Vaktija.ba.Pages
                 Memory.KompasBroj = kompasiFlipView.SelectedIndex;
         }
     }
+    class ChooseLocationShow
+    {
+        public Brush foregroundColor
+        {
+            get
+            {
+                if (Fixed.IsDarkTheme) return new SolidColorBrush(Colors.LightGray);
+                else return new SolidColorBrush(Colors.DarkGray);
+            }
+        }
+        public Brush backgroundColor
+        {
+            get
+            {
+                if (Fixed.IsDarkTheme) return new SolidColorBrush(Colors.Black);
+                else return new SolidColorBrush(Colors.White);
+            }
+        }
+        public string lokacija
+        {
+            get
+            {
+                return Data.data.locations[Memory.location];
+            }
+        }
+    }
+
 }

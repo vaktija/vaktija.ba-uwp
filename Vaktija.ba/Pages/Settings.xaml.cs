@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Vaktija.ba.Helpers;
 using Windows.ApplicationModel;
 using Windows.Phone.UI.Input;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Text;
@@ -16,19 +17,15 @@ namespace Vaktija.ba.Pages
 {
     public sealed partial class Settings : Page
     {
-        bool ucitavam = true;
         public Settings()
         {
             this.InitializeComponent();
+
+            DataContext = new Postavke();
         }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ucitavam = true;
-            Application.Current.Resuming += (s, ar) =>
-            {
-                try { } catch { }
-            };
-
             if (Fixed.IsPhone)
                 HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             else
@@ -40,154 +37,49 @@ namespace Vaktija.ba.Pages
                     Frame.Navigate(typeof(Pages.Home));
                 };
             }
-
-            Postavi_Stranicu();
         }
+
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             if (Fixed.IsPhone)
                 HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
         }
+
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
             e.Handled = true;
             Frame.Navigate(typeof(Pages.Home));
         }
 
-        private void Postavi_Stranicu()
-        {
-            ucitavam = true;
-
-            if (Fixed.IsDarkTheme)
-            {
-                _pivot.Background = new SolidColorBrush(Color.FromArgb(255, 31, 31, 31));
-            }
-            else
-            {
-                _pivot.Background = new SolidColorBrush(Color.FromArgb(255, 241, 241, 241));
-            }
-
-            //Location
-            locationHB.Text = Memory.location.ime;
-
-            //Date in app
-            dateShowInApp_TS.IsOn = Memory.Date_Show_In_App;
-
-            //Hijri date in app
-            hijriDateShowInApp_TS.IsEnabled = Memory.Date_Show_In_App;
-            hijriDateShowInApp_TS.IsOn = Memory.Hijri_Date_In_App;
-
-            //Standard zuhr time
-            if (Memory.Std_Podne)
-                stdPodneCB.SelectedIndex = 0;
-            else
-                stdPodneCB.SelectedIndex = 1;
-
-            //Theme
-            themeCB.SelectedIndex = Memory.Theme;
-
-            //Alarm sound
-            if (!Fixed.IsPhone) alarmLVI.Visibility = Visibility.Collapsed;
-            alarmsoundHB.Text = Daj_Ime_Zvuka_Notifikacije(Memory.Alarm_Sound);
-
-            //Toast sound
-            toastsoundHB.Text = Daj_Ime_Zvuka_Notifikacije(Memory.Toast_Sound);
-
-            //Live tile
-            livetile_TS.IsOn = Memory.Live_Tile;
-
-            //App info
-            versionTB.Text = "v " + Package.Current.Id.Version.Major + "." + Package.Current.Id.Version.Minor + "." + Package.Current.Id.Version.Build;
-
-            ucitavam = false;
-        }
-
-        private string Daj_Ime_Zvuka_Notifikacije(string x, bool star = false)
-        {
-            if (star)
-            {
-                if (x == Memory.Alarm_Sound)
-                    star = true;
-                else
-                    star = false;
-            }
-            if (x.Contains("ms-appx"))
-            {
-                x = x.Replace("ms-appx:///Assets/Sounds/", "").Replace(".wav", "").Replace(".mp3", "").Replace(".ogg", "").Trim();
-            }
-            else if (x.Contains("Notification.Looping"))
-            {
-                x = x.Replace("ms-winsoundevent:Notification.Looping.", "").Trim();
-            }
-            else
-            {
-                x = x.Replace("ms-winsoundevent:Notification.", "").Trim();
-            }
-            if (star) x += " (*)";
-            return x;
-        }
-        private List<string> Paths_To_All_Alarm_Sounds()
-        {
-            List<string> sounds = new List<string>();
-            sounds.Add("ms-appx:///Assets/Sounds/BeepBeep.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Beep-Beep-Beep.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Buzzer.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Piezo.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Ringing.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Roster.mp3");
-            return sounds;
-        }
-        private List<string> Paths_To_All_Toast_Sounds()
-        {
-            List<string> sounds = new List<string>();
-            sounds.Add("ms-appx:///Assets/Sounds/BeepBeep.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Beep-Beep-Beep.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Buzzer.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Piezo.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Ringing.mp3");
-            sounds.Add("ms-appx:///Assets/Sounds/Roster.mp3");
-            return sounds;
-        }
-
         private void location_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (ucitavam) return;
             Frame.Navigate(typeof(ChooseLocation));
         }
 
         private void dateShowInApp_TS_Toggled(object sender, RoutedEventArgs e)
         {
-            if (ucitavam) return;
             Memory.Date_Show_In_App = dateShowInApp_TS.IsOn;
-            Postavi_Stranicu();
+            hijriDateShowInApp_TS.IsEnabled = dateShowInApp_TS.IsOn;
         }
 
         private void hijriDateShowInApp_TS_Toggled(object sender, RoutedEventArgs e)
         {
-            if (ucitavam) return;
             Memory.Hijri_Date_In_App = hijriDateShowInApp_TS.IsOn;
-            Postavi_Stranicu();
         }
 
         private void stdPodneCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ucitavam) return;
             if (stdPodneCB.SelectedIndex == 0)
-            {
                 Memory.Std_Podne = true;
-            }
             else
-            {
                 Memory.Std_Podne = false;
-            }
-            Set.Group_Notifications(2, 0, true, 2, 0, true);
-            Postavi_Stranicu();
+
+            Notification.Set(Data.Obavijest.All);
         }
 
         private void themeCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ucitavam) return;
-            MainPage.Theme_Changed = true;
+            if (Memory.Theme == themeCB.SelectedIndex) return;
 
             Memory.Theme = themeCB.SelectedIndex;
 
@@ -201,12 +93,23 @@ namespace Vaktija.ba.Pages
                 dt.Stop();
             };
             dt.Start();
-            Postavi_Stranicu();
         }
 
-        private void alarmsound_Tapped(object sender, TappedRoutedEventArgs e)
+        private async System.Threading.Tasks.Task<List<StorageFile>> Alarm_Sounds()
         {
-            if (ucitavam) return;
+            var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync(Fixed.App_Assets_Folder);
+            var soundsFolder = await assetsFolder.GetFolderAsync(Fixed.App_Sound_Folder);
+            var soundsFiles = await soundsFolder.GetFilesAsync();
+
+            List<StorageFile> sounds = new List<StorageFile>();
+            foreach (var a in soundsFiles)
+                sounds.Add(a);
+
+            return sounds;
+        }
+
+        private async void alarmsound_Tapped(object sender, TappedRoutedEventArgs e)
+        {
             Grid mainGrid = new Grid { MinWidth = 320, };
             Flyout mainFlyout = new Flyout { Content = mainGrid, Placement = Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Top };
             mainGrid.RowDefinitions.Add(new RowDefinition());
@@ -235,20 +138,20 @@ namespace Vaktija.ba.Pages
             };
             panel.Children.Add(lv);
 
-            List<string> svi = Paths_To_All_Alarm_Sounds();
+            var alarmSounds = await Alarm_Sounds();
             List<RadioButton> rbtns = new List<RadioButton>();
-            foreach (var it in svi)
+            foreach (var it in alarmSounds)
             {
                 RadioButton rbtn = new RadioButton
                 {
-                    Content = Daj_Ime_Zvuka_Notifikacije(it),
-                    Tag = it,
+                    Content = it.DisplayName,
+                    Tag = "ms-appx:///" + Fixed.App_Assets_Folder + "/" + Fixed.App_Sound_Folder + "/" + it.Name,
                     Padding = new Thickness(6),
                     FontSize = 18,
+                    IsChecked = false
                 };
                 lv.Items.Add(rbtn);
-                if (it == Memory.Alarm_Sound) rbtn.IsChecked = true;
-                else rbtn.IsChecked = false;
+                if (Memory.Alarm_Sound.Contains(it.Name)) rbtn.IsChecked = true;
                 rbtns.Add(rbtn);
 
                 rbtn.Checked += (s, args) =>
@@ -289,8 +192,7 @@ namespace Vaktija.ba.Pages
                         Memory.Alarm_Sound = rb.Tag.ToString();
                 audio_prev.AutoPlay = false;
                 audio_prev.Stop();
-                Postavi_Stranicu();
-                Set.Group_Notifications(2, 0, false, 6, 1, true);
+                Notification.Set(Data.Obavijest.All);
                 mainFlyout.Hide();
             };
             lBtn.SetValue(Grid.ColumnProperty, 0);
@@ -326,9 +228,8 @@ namespace Vaktija.ba.Pages
             mainFlyout.ShowAt(this);
         }
 
-        private void toastsound_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void toastsound_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (ucitavam) return;
             Grid mainGrid = new Grid { MinWidth = 320, };
             Flyout mainFlyout = new Flyout { Content = mainGrid, Placement = Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Top };
             mainGrid.RowDefinitions.Add(new RowDefinition());
@@ -357,20 +258,20 @@ namespace Vaktija.ba.Pages
             };
             panel.Children.Add(lv);
 
-            List<string> svi = Paths_To_All_Toast_Sounds();
+            var toastSounds = await Alarm_Sounds();
             List<RadioButton> rbtns = new List<RadioButton>();
-            foreach (var it in svi)
+            foreach (var it in toastSounds)
             {
                 RadioButton rbtn = new RadioButton
                 {
-                    Content = Daj_Ime_Zvuka_Notifikacije(it),
-                    Tag = it,
+                    Content = it.DisplayName,
+                    Tag = "ms-appx:///" + Fixed.App_Assets_Folder + "/" + Fixed.App_Sound_Folder + "/" + it.Name,
                     Padding = new Thickness(6),
                     FontSize = 18,
+                    IsChecked = false
                 };
                 lv.Items.Add(rbtn);
-                if (it == Memory.Toast_Sound) rbtn.IsChecked = true;
-                else rbtn.IsChecked = false;
+                if (Memory.Toast_Sound.Contains(it.Name)) rbtn.IsChecked = true;
                 rbtns.Add(rbtn);
 
                 rbtn.Checked += (s, args) =>
@@ -411,9 +312,8 @@ namespace Vaktija.ba.Pages
                         Memory.Toast_Sound = rb.Tag.ToString();
                 audio_prev.AutoPlay = false;
                 audio_prev.Stop();
-                Postavi_Stranicu();
 
-                Set.Group_Notifications(2, 0, false, 6, 2, true);
+                Notification.Set(Data.Obavijest.All);
                 mainFlyout.Hide();
             };
             lBtn.SetValue(Grid.ColumnProperty, 0);
@@ -451,23 +351,49 @@ namespace Vaktija.ba.Pages
 
         private void livetile_TS_Toggled(object sender, RoutedEventArgs e)
         {
-            if (ucitavam) return;
             Memory.Live_Tile = livetile_TS.IsOn;
 
-            if (Memory.Live_Tile) LiveTile.Update();
-            else LiveTile.Reset();
-
-            Postavi_Stranicu();
+            LiveTile.Update();
         }
 
         private async void contactBtn_Click(object sender, RoutedEventArgs e)
         {
-            string mail_subject = "Vaktija za Windows10";
+            string mail_subject = "Vaktija za Windows 10" + " v" + Package.Current.Id.Version.Major + "." + Package.Current.Id.Version.Minor + "." + Package.Current.Id.Version.Build;
             await Windows.System.Launcher.LaunchUriAsync(new Uri("mailto:windows@vaktija.ba?subject=" + mail_subject));
         }
+
         private async void rateBtn_Click(object sender, RoutedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store:REVIEW?PFN=" + Windows.ApplicationModel.Package.Current.Id.FamilyName));
         }
+    }
+
+    class Postavke
+    {
+        public Brush background {
+            get
+            {
+                if (Fixed.IsDarkTheme) return new SolidColorBrush(Color.FromArgb(255, 31, 31, 31));
+                else return new SolidColorBrush(Color.FromArgb(255, 241, 241, 241));
+            }
+        }
+        public string location { get => Data.data.locations[Memory.location]; }
+        public bool dateInApp { get => Memory.Date_Show_In_App; }
+        public bool hijriDateInApp { get => Memory.Hijri_Date_In_App; }
+        public int stdPodne
+        {
+            get
+            {
+                if (Memory.Std_Podne) return 0;
+                else return 1;
+            }
+        }
+        public int themeSelect { get => Memory.Theme; }
+        public string alarmName { get => Memory.Alarm_Sound.Replace("ms-appx:///Assets/Sounds/", "").Replace(".wav", "").Replace(".mp3", "").Replace(".ogg", "").Replace("ms-winsoundevent:Notification.Looping.", "").Replace("ms-winsoundevent:Notification.", ""); }
+        public string toastName { get => Memory.Toast_Sound.Replace("ms-appx:///Assets/Sounds/", "").Replace(".wav", "").Replace(".mp3", "").Replace(".ogg", "").Replace("ms-winsoundevent:Notification.Looping.", "").Replace("ms-winsoundevent:Notification.", ""); }
+        public bool livetile { get => Memory.Live_Tile; }
+        public string appName { get => Fixed.App_Name; }
+        public string appVersion { get => "v " + Package.Current.Id.Version.Major + "." + Package.Current.Id.Version.Minor + "." + Package.Current.Id.Version.Build; }
+        public string appDevs { get => "by " + Fixed.App_Developer; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Vaktija.ba.Helpers;
-using Vaktija.ba.Views;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
@@ -49,14 +48,14 @@ namespace Vaktija.ba
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Set.System_Tray();
+            Notification.Set_System_Tray();
 
             RegisterBackgroundTask_TimeTrigger();
             RegisterBackgroundTask_ToastNotificationHistoryChangedTrigger();
 
             try
             {
-                Data.data = Set.JsonToArray<Data>(await Get.Read_Data_To_String())[0];
+                Data.data = Data.JsonToArray<Data>(await Data.Read_Data_To_String(Fixed.App_Data_File))[0];
             }
             catch
             {
@@ -96,7 +95,16 @@ namespace Vaktija.ba
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                await System.Threading.Tasks.Task.Delay(250);
+
+                if (Memory.First_Time())
+                {
+                    rootFrame.Navigate(typeof(Pages.ChooseLocation), e.Arguments);
+                }
+                else
+                {
+                    rootFrame.Navigate(typeof(Pages.Home), e.Arguments);
+                }
             }
             // Ensure the current window is active
             Window.Current.Activate();
@@ -125,10 +133,7 @@ namespace Vaktija.ba
 
             try
             {
-                if (Memory.Live_Tile) /* Update / reset live tile */
-                    LiveTile.Update();
-                else
-                    LiveTile.Reset();
+                LiveTile.Update();
             }
             finally
             {

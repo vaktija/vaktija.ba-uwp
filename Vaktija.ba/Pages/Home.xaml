@@ -2,20 +2,19 @@
     x:Class="Vaktija.ba.Pages.Home"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Vaktija.ba.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Hidden">
             <CommandBar.PrimaryCommands>
-                <AppBarButton x:Name="Compass_Btn" Visibility="Visible" Icon="Map" Click="Compass_Btn_Click" Label="Kibla kompas"/>
+                <AppBarButton x:Name="Compass_Btn" Visibility="Visible" Icon="Directions"  Click="Compass_Btn_Click" Label="Kibla kompas"/>
                 <AppBarButton x:Name="Calendar_Btn" Icon="Calendar" Click="Calendar_Btn_Click" Label="Kalendar"/>
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="Rate_Btn" Click="Rate_Btn_Click" Label="Ocijeni aplikaciju" Icon="Emoji2"/>
-                <AppBarButton x:Name="Share_Btn" Click="Share_Btn_Click" Label="Podijeli vremena" Icon="ReShare"/>
+                <AppBarButton x:Name="Rate_Btn" Click="Rate_Btn_Click" Label="Ocijeni aplikaciju" Icon="SolidStar"/>
+                <AppBarButton x:Name="Share_Btn" Click="Share_Btn_Click" Label="Podijeli vremena" Icon="PostUpdate"/>
                 <AppBarButton x:Name="Settings_Btn" Icon="Setting" Click="Settings_Btn_Click" Label="Postavke"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
@@ -38,7 +37,7 @@
                     </ListViewItem>
                     <ListViewItem x:Name="Compass_Btn_2" Padding="0" Visibility="Visible" Tapped="Compass_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
-                            <AppBarButton Icon="Map" Width="50" Height="50" IsCompact="True" />
+                            <AppBarButton Icon="Directions" Width="50" Height="50" IsCompact="True" />
                             <TextBlock FontSize="22" Text="Kibla kompas" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
@@ -46,13 +45,13 @@
                 <ListView VerticalAlignment="Bottom" SelectionMode="None">
                     <ListViewItem Padding="0" Tapped="Share_Tapped" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
-                            <AppBarButton Icon="ReShare" Width="50" Height="50" IsCompact="True" />
+                            <AppBarButton Icon="PostUpdate" Width="50" Height="50" IsCompact="True" />
                             <TextBlock FontSize="22" Text="Podijeli vremena" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Padding="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Tapped="Rate_Tapped">
                         <StackPanel Orientation="Horizontal">
-                            <AppBarButton Icon="Emoji2" Width="50" Height="50" IsCompact="True" />
+                            <AppBarButton Icon="SolidStar" Width="50" Height="50" IsCompact="True" />
                             <TextBlock FontSize="22" Text="Ocijeni aplikaciju" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
@@ -68,51 +67,28 @@
         <SplitView.Content>
             <Grid x:Name="contentPanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="5*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid x:Name="header_Grid" Grid.Row="0">
-
+                <Grid x:Name="header_Grid" Grid.Row="0" Margin="0" Padding="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Viewbox MaxHeight="20" HorizontalAlignment="Right" Visibility="{Binding datumVisibility}" >
+                        <TextBlock Padding="6,0" FontFamily="Segoe UI Light" HorizontalAlignment="Right" Text="{Binding datum}" Foreground="{Binding foregroundColor}" />
+                    </Viewbox>
+                    <ListViewItem Grid.Row="1" Padding="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Tapped="Location_Tapped" HorizontalAlignment="Stretch">
+                        <Grid Background="{Binding backgroundColor}" Padding="6,0">
+                            <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                <TextBlock FontFamily="Segoe UI Light" Text="{Binding lokacija}" Foreground="{Binding foregroundColor}" FontWeight="Light" OpticalMarginAlignment="TrimSideBearings"/>
+                            </Viewbox>
+                        </Grid>
+                    </ListViewItem>
                 </Grid>
                 <Grid x:Name="main_Grid" Grid.Row="1">
-                    <!--
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ListViewItem HorizontalContentAlignment="Stretch" Grid.Row="1" VerticalContentAlignment="Stretch" Padding="6,0,6,0" Margin="6,0,6,0" BorderThickness="0,1,0,1" BorderBrush="LightGray">
-                        <Grid Background="Black">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Viewbox VerticalAlignment="Center" Stretch="Fill" HorizontalAlignment="Center" Margin="3">
-                                <TextBlock Text="00:00" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="44" FontFamily="Segoe UI Semilight" OpticalMarginAlignment="TrimSideBearings" FontWeight="Light" MinWidth="72"/>
-                            </Viewbox>
-                        </Grid>
-                    </ListViewItem>
-                    <ListViewItem HorizontalContentAlignment="Stretch" Grid.Row="2" VerticalContentAlignment="Stretch" Padding="6,0,6,0" Margin="6,0,6,0" BorderThickness="0,0,0,1" BorderBrush="LightGray">
-                        <Grid Background="Black">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Viewbox VerticalAlignment="Center" Stretch="Fill" HorizontalAlignment="Center" Margin="3">
-                                <TextBlock Text="1:11" VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center" FontSize="44" FontFamily="Segoe UI Semilight" OpticalMarginAlignment="TrimSideBearings" FontWeight="Light" MinWidth="72"/>
-                            </Viewbox>
-                        </Grid>
-                    </ListViewItem>
-                    -->
+
                 </Grid>
                 <Grid x:Name="calendar_Grid" HorizontalAlignment="Stretch" Visibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Grid.Row="1">
                     <Grid.RenderTransform>
@@ -121,7 +97,7 @@
                 </Grid>
                 <Grid x:Name="footer_Grid" Grid.Row="2">
                 </Grid>
-                <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent"/>
+                <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent" Foreground="#FF9D9D00"/>
             </Grid>
         </SplitView.Content>
     </SplitView>

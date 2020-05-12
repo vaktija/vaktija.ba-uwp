@@ -23,27 +23,17 @@ namespace BackgroundTask.Helpers
             toastBlocked = new List<bool> { true, false, false, false, false, false };
             predToast = new List<int> { 15, 15, 15, 15, 15, 15 };
 
-            location = new Views.Location
-            {
-                id = 107,
-                ime = "Sarajevo",
-                latitude = 43.856259,
-                longitude = 18.413076,
-            };
+            location = 77;
 
             Date_Show_In_App = true;
             Hijri_Date_In_App = false;
-            Std_Podne = true;
+            Std_Podne = false;
             Theme = 1; // 0-Default; 1-Light; 2-Dark;
 
             Alarm_Sound = "ms-appx:///Assets/Sounds/Beep-Beep-Beep.mp3";
             Toast_Sound = "ms-appx:///Assets/Sounds/BeepBeep.mp3";
 
             Live_Tile = true;
-
-            KompasBroj = 0;
-
-            HijriException = 0;
 
             return true;
         }
@@ -80,38 +70,6 @@ namespace BackgroundTask.Helpers
                 local.Values["predAlarm"] = s;
             }
         }
-        public static List<bool> alarmBlocked
-        {
-            get
-            {
-                if (local.Values.ContainsKey("alarmBlocked"))
-                {
-                    string s = local.Values["alarmBlocked"].ToString();
-                    string[] sp = new string[] { "|" };
-                    string[] ss = s.Split(sp, System.StringSplitOptions.RemoveEmptyEntries);
-                    List<bool> a = new List<bool>();
-                    foreach (var it in ss)
-                    {
-                        a.Add(Convert.ToBoolean(it));
-                    }
-                    return a;
-                }
-                else
-                {
-                    alarmBlocked = new List<bool> { true, false, true, true, true, true, };
-                    return new List<bool> { true, false, true, true, true, true, };
-                }
-            }
-            set
-            {
-                string s = "";
-                foreach (var it in value)
-                {
-                    s += it.ToString() + "|";
-                }
-                local.Values["alarmBlocked"] = s;
-            }
-        }
         public static List<int> predToast
         {
             get
@@ -142,6 +100,39 @@ namespace BackgroundTask.Helpers
                     s += it + "|";
                 }
                 local.Values["predToast"] = s;
+            }
+        }
+
+        public static List<bool> alarmBlocked
+        {
+            get
+            {
+                if (local.Values.ContainsKey("alarmBlocked"))
+                {
+                    string s = local.Values["alarmBlocked"].ToString();
+                    string[] sp = new string[] { "|" };
+                    string[] ss = s.Split(sp, System.StringSplitOptions.RemoveEmptyEntries);
+                    List<bool> a = new List<bool>();
+                    foreach (var it in ss)
+                    {
+                        a.Add(Convert.ToBoolean(it));
+                    }
+                    return a;
+                }
+                else
+                {
+                    alarmBlocked = new List<bool> { true, false, true, true, true, true, };
+                    return new List<bool> { true, false, true, true, true, true, };
+                }
+            }
+            set
+            {
+                string s = "";
+                foreach (var it in value)
+                {
+                    s += it.ToString() + "|";
+                }
+                local.Values["alarmBlocked"] = s;
             }
         }
         public static List<bool> toastBlocked
@@ -176,6 +167,7 @@ namespace BackgroundTask.Helpers
                 local.Values["toastBlocked"] = s;
             }
         }
+
         public static string skippedAlarms
         {
             get
@@ -214,41 +206,23 @@ namespace BackgroundTask.Helpers
                 local.Values["skippedToasts"] = value;
             }
         }
-        public static Views.Location location
+
+        public static int location
         {
             get
             {
-                if (local.Values.ContainsKey("Location_Id") && local.Values.ContainsKey("Location_Name") && local.Values.ContainsKey("Location_Latitude") && local.Values.ContainsKey("Location_Longitude"))
+                if (local.Values.ContainsKey("Location_Id"))
                 {
-                    Views.Location temp = new Views.Location
-                    {
-                        id = (int)local.Values["Location_Id"],
-                        ime = local.Values["Location_Name"].ToString(),
-                        latitude = (double)local.Values["Location_Latitude"],
-                        longitude = (double)local.Values["Location_Longitude"],
-                    };
-                    return temp;
+                    return (int)local.Values["Location_Id"];
                 }
                 else
                 {
-                    Views.Location temp = new Views.Location
-                    {
-                        id = 107,
-                        ime = "Sarajevo",
-                        latitude = 43.856259,
-                        longitude = 18.413076,
-                    };
-                    location = temp;
-                    return temp;
+                    return 77;
                 }
             }
             set
             {
-                Views.Location temp = value as Views.Location;
-                local.Values["Location_Id"] = temp.id;
-                local.Values["Location_Name"] = temp.ime;
-                local.Values["Location_Latitude"] = temp.latitude;
-                local.Values["Location_Longitude"] = temp.longitude;
+                local.Values["Location_Id"] = value;
             }
         }
         public static bool Std_Podne
@@ -259,7 +233,7 @@ namespace BackgroundTask.Helpers
                     return (bool)local.Values["Std_Podne"];
                 else
                 {
-                    Std_Podne = true;
+                    Std_Podne = false;
                     return true;
                 }
             }
@@ -368,40 +342,6 @@ namespace BackgroundTask.Helpers
             set
             {
                 local.Values["Live_Tile"] = value;
-            }
-        }
-        public static int KompasBroj
-        {
-            get
-            {
-                if (local.Values.ContainsKey("KompasBroj"))
-                    return (int)local.Values["KompasBroj"];
-                else
-                {
-                    KompasBroj = 0;
-                    return 0;
-                }
-            }
-            set
-            {
-                local.Values["KompasBroj"] = value;
-            }
-        }
-        public static int HijriException
-        {
-            get
-            {
-                if (local.Values.ContainsKey("HijriException"))
-                    return (int)local.Values["HijriException"];
-                else
-                {
-                    HijriException = 0;
-                    return 0;
-                }
-            }
-            set
-            {
-                local.Values["HijriException"] = value;
             }
         }
     }

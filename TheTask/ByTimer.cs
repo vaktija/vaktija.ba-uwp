@@ -1,5 +1,4 @@
 ﻿using BackgroundTask.Helpers;
-using BackgroundTask.Views;
 using Windows.ApplicationModel.Background;
 
 namespace BackgroundTask
@@ -11,16 +10,11 @@ namespace BackgroundTask
             var def = taskInstance.GetDeferral();
             try
             {
-                Data.data = Set.JsonToArray<Data>(await Get.Read_Data_To_String())[0];
+                Data.data = Data.JsonToArray<Data>(await Data.Read_Data_To_String(Fixed.App_Data_File))[0];
 
-                Year.Set();
+                LiveTile.Update();
 
-                if (Memory.Live_Tile)
-                    LiveTile.Update();
-                else
-                    LiveTile.Reset();
-
-                Set.Group_Notifications(2, 0, false);
+                Notification.Set(Data.Obavijest.All);
             }
             finally
             {
