@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="13065Vaktija.ba.Vaktija.ba" Publisher="CN=1EE4327A-F05B-45A4-9261-281752ACD881" Version="1.21.1.0" />
+  <Identity Name="13065Vaktija.ba.Vaktija.ba" Publisher="CN=1EE4327A-F05B-45A4-9261-281752ACD881" Version="1.22.0.0" />
   <mp:PhoneIdentity PhoneProductId="73eac55d-679a-4cb2-ba74-2458e17aa207" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Vaktija.ba</DisplayName>

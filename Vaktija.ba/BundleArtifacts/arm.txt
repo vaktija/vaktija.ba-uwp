@@ -1,6 +1,6 @@
-MainPackage=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.10.3.0_ARM.appx
-SymbolPackage=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\AppPackages\Vaktija.ba_1.10.3.0_Test\Vaktija.ba_1.10.3.0_ARM.appxsym
-ResourcePack=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.10.3.0_scale-100.appx
-ResourcePack=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.10.3.0_scale-125.appx
-ResourcePack=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.10.3.0_scale-150.appx
-ResourcePack=C:\Users\admin\Desktop\vaktija-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.10.3.0_scale-400.appx
+MainPackage=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.22.0.0_ARM.appx
+SymbolPackage=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\obj\ARM\Release\Symbols\Vaktija.ba_1.22.0.0_ARM.appxsym
+ResourcePack=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.22.0.0_scale-100.appx
+ResourcePack=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.22.0.0_scale-125.appx
+ResourcePack=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.22.0.0_scale-150.appx
+ResourcePack=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\ARM\Release\Vaktija.ba_1.22.0.0_scale-400.appx

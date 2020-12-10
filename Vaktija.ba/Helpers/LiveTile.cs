@@ -117,7 +117,7 @@ namespace Vaktija.ba.Helpers
             xml += "            <text id=\"6\">" + Data.VakatTime(date, 4).ToString("HH:mm") + " " + Data.data.vakatNames[4] + "</text>";
             xml += "            <text id=\"7\">" + Data.VakatTime(date, 5).ToString("HH:mm") + " " + Data.data.vakatNames[5] + "</text>";
             xml += "            <text hint-align=\"center\" id=\"8\">" + date.Day + "</text>";
-            xml += "            <text hint-align=\"center\" id=\"9\">" + Data.data.monthnames[date.Month] + "</text>";
+            xml += "            <text hint-align=\"center\" id=\"9\">" + Data.data.monthnames[DateTime.Now.Month % 12] + "</text>";
             xml += "        </binding>";
             xml += "        <binding template=\"TileWide\" hint-lockDetailedStatus1=\"" + rowOnLockScreen1 + "\" hint-lockDetailedStatus2=\"" + rowOnLockScreen2 + "\" hint-lockDetailedStatus3=\"" + rowOnLockScreen3 + "\">";
             xml += "            <group>";
