@@ -246,7 +246,7 @@ namespace Vaktija.ba.Helpers
                 statusBar.ProgressIndicator.Text = message;
                 if (message != "")
                 {
-                    statusBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 157, 157, 0);
+                    statusBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 165, 149, 115);
                     statusBar.ForegroundColor = Windows.UI.Colors.Black;
                 }
                 await statusBar.ProgressIndicator.ShowAsync();
@@ -270,9 +270,9 @@ namespace Vaktija.ba.Helpers
                 }
                 if (message != "")
                 {
-                    v.TitleBar.ButtonBackgroundColor = Windows.UI.Color.FromArgb(255, 157, 157, 0);
+                    v.TitleBar.ButtonBackgroundColor = Windows.UI.Color.FromArgb(255, 165, 149, 115);
                     v.TitleBar.ButtonForegroundColor = Windows.UI.Colors.Black;
-                    v.TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 157, 157, 0);
+                    v.TitleBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 165, 149, 115);
                     v.TitleBar.ForegroundColor = Windows.UI.Colors.Black;
                 }
                 v.Title = message;

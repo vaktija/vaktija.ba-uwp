@@ -269,7 +269,7 @@ namespace Vaktija.ba.Pages
 
             if (vakat.isNext)
             {
-                clock_TB.Foreground = new SolidColorBrush(Color.FromArgb(255, 157, 157, 0));
+                clock_TB.Foreground = new SolidColorBrush(Color.FromArgb(255, 165, 149, 115));
                 clock_TB.FontWeight = FontWeights.Normal;
             }
 

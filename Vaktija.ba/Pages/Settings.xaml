@@ -120,6 +120,6 @@
             <TextBlock x:Name="Toast_TextBlock" Text="" Padding="12,6" FontSize="18" Foreground="White" TextWrapping="Wrap" TextAlignment="Center"/>
         </Grid>
         <MediaElement x:Name="audio_prev" />
-        <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent" Foreground="#7F9D9D00"/>
+        <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent" Foreground="#7FA59573"/>
     </Grid>
 </Page>

@@ -71,6 +71,6 @@
             </Border>
         </Grid>
 
-        <ProgressRing x:Name="loader" Width="80" Height="80" Grid.Row="1" IsActive="False" Background="Transparent" Foreground="#FF9D9D00"/>
+        <ProgressRing x:Name="loader" Width="80" Height="80" Grid.Row="1" IsActive="False" Background="Transparent" Foreground="#FFA59573"/>
     </Grid>
 </Page>

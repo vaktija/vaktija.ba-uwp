@@ -97,7 +97,7 @@
                 </Grid>
                 <Grid x:Name="footer_Grid" Grid.Row="2">
                 </Grid>
-                <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent" Foreground="#FF9D9D00"/>
+                <ProgressRing x:Name="loader" IsActive="False" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="80" Grid.Row="1" Background="Transparent" Foreground="#FFA59573"/>
             </Grid>
         </SplitView.Content>
     </SplitView>
