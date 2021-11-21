@@ -1,2 +1,2 @@
-MainPackage=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\x64\Release\Upload\Vaktija.ba_1.24.2.0_x64.appx
-SymbolPackage=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\x64\Release\Upload\Vaktija.ba_1.24.2.0\Vaktija.ba_1.24.2.0_x64.appxsym
+MainPackage=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\x64\Release\Upload\Vaktija.ba_1.25.1.0_x64.msix
+SymbolPackage=C:\Users\admin\Desktop\vaktija.ba-uwp\Vaktija.ba\bin\x64\Release\Upload\Vaktija.ba_1.25.1.0\Vaktija.ba_1.25.1.0_x64.appxsym
